@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Profile - {{ profile.user.username }}{% endblock %}
+{% block content %}
+  <h1>{{ profile.user.username }}</h1>
+  <p>{{ profile.bio }}</p>
+  {% if user.is_authenticated and user.username != profile.user.username %}
+    <form method="post" action="{% url 'follow_toggle' profile.user.username %}">{% csrf_token %}
+      <button type="submit">{% if is_following %}Unfollow{% else %}Follow{% endif %}</button>
+    </form>
+  {% endif %}
+  <h2>Posts</h2>
+  {% for post in posts %}
+    <article>
+      <p>{{ post.created_at }} - {{ post.content|linebreaks }}</p>
+      <p><a href="{% url 'post_detail' post.pk %}">View</a></p>
+    </article>
+  {% empty %}
+    <p>No posts yet.</p>
+  {% endfor %}
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Feed{% endblock %}
+{% block content %}
+  <h1>Feed</h1>
+  {% if user.is_authenticated %}
+    <p><a href="{% url 'create_post' %}"><button>Create Post</button></a></p>
+  {% endif %}
+  {% for post in posts %}
+    <article>
+      <p><strong><a href="{% url 'profile' post.author.user.username %}">{{ post.author.user.username }}</a></strong> - {{ post.created_at }}</p>
+      <p>{{ post.content|linebreaks }}</p>
+      <p><a href="{% url 'post_detail' post.pk %}">View</a></p>
+    </article>
+    <hr />
+  {% empty %}
+    <p>No posts yet.</p>
+  {% endfor %}
+{% endblock %}
